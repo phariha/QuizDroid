@@ -18,9 +18,9 @@ class TopicOverview : AppCompatActivity() {
         topicTextView.text = "Topic: $selectedTopic"
 
         val description = when (selectedTopic) {
-            "Math" -> "This quiz will be on a few short questions about algebra."
-            "Physics" -> "This quiz will be on a few short questions about Newton's laws."
-            "Superheros" -> "This quiz will be on a few short questions about Marvel and DC Superheros."
+            "Math" -> "This quiz will contain a few short questions about algebra."
+            "Physics" -> "This quiz will contain a few short questions about laws of phsyics."
+            "Superheros" -> "This quiz will contain a few short questions about Marvel and DC Superheros."
             else -> "No description available for $selectedTopic"
         }
 
