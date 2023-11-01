@@ -2,10 +2,12 @@ package edu.uw.ischool.phariha.quizdroid
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 data class QuizQuestion(
@@ -15,7 +17,7 @@ data class QuizQuestion(
 )
 
 class QuizActivity : AppCompatActivity() {
-
+    private var correctAnswers = 0
     private val mathQuestions = arrayOf(
         QuizQuestion("What is x if 5x + 5 = 15?", arrayOf("2", "3", "4", "5"), "4"),
         QuizQuestion("What is x if 3x + 5 = 23?", arrayOf("6", "8", "10", "12"), "6"),
@@ -59,19 +61,70 @@ class QuizActivity : AppCompatActivity() {
 
         displayQuestion()
 
-        val nextButton = findViewById<Button>(R.id.nextButton)
-        nextButton.setOnClickListener {
-            if (currentQuestionIndex < questions.size - 1) {
-                currentQuestionIndex++
-                displayQuestion()
+        val submitButton = findViewById<Button>(R.id.submitButton)
+        var isLastQuestion = false
+        var isRadioButtonSelected = false
+
+        submitButton.setOnClickListener {
+            val selectedRadioButton = findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
+            if (selectedRadioButton != null) {
+                val userAnswer = selectedRadioButton.text.toString()
+                val correctAnswer = currentQuestion.correctAnswer
+                val isCorrect = userAnswer == correctAnswer
+
+                if (isCorrect) {
+                    correctAnswers++
+                }
+
+                val answerIntent = Intent(this, AnswerActivity::class.java).apply {
+                    putExtra("userAnswer", userAnswer)
+                    putExtra("correctAnswer", correctAnswer)
+                    putExtra("isCorrect", isCorrect)
+                    putExtra("correctAnswers", correctAnswers)
+                    putExtra("totalQuestions", questions.size)
+                    putExtra("remainingQuestions", questions.size - currentQuestionIndex - 1)
+                }
+                startActivity(answerIntent)
+                finish()
+            } else {
+                Toast.makeText(this, "Please select an answer", Toast.LENGTH_SHORT).show()
             }
         }
+
+        val nextButton = findViewById<Button>(R.id.nextButton)
+        nextButton.isEnabled = false
 
         val backButton = findViewById<Button>(R.id.backButton)
         backButton.setOnClickListener {
             if (currentQuestionIndex > 0) {
                 currentQuestionIndex--
                 displayQuestion()
+                isRadioButtonSelected = false
+                isLastQuestion = false
+                submitButton.visibility = View.GONE
+                nextButton.isEnabled = true
+            }
+        }
+
+        radioGroup.setOnCheckedChangeListener { _, _ ->
+            isRadioButtonSelected = true
+            nextButton.isEnabled = true
+            if (isLastQuestion) {
+                submitButton.visibility = View.VISIBLE
+                nextButton.isEnabled = false
+            }
+        }
+
+        nextButton.setOnClickListener {
+            if (isRadioButtonSelected) {
+                if (currentQuestionIndex < questions.size - 1) {
+                    currentQuestionIndex++
+                    displayQuestion()
+                    isRadioButtonSelected = false
+                    if (currentQuestionIndex == questions.size - 1) {
+                        isLastQuestion = true
+                    }
+                }
             }
         }
     }
@@ -84,7 +137,7 @@ class QuizActivity : AppCompatActivity() {
             "Physics" -> {
                 questions = physicsQuestions
             }
-            "Superheroes" -> {
+            "Superheros" -> {
                 questions = superheroQuestions
             }
             else -> {
