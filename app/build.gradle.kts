@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "edu.uw.ischool.phariha.quizdroid"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "edu.uw.ischool.phariha.quizdroid"
@@ -33,6 +33,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildToolsVersion = "34.0.0"
 }
 
 dependencies {

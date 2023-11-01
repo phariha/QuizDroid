@@ -1,9 +1,6 @@
 package edu.uw.ischool.phariha.quizdroid
 
 import android.os.Bundle
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -13,8 +10,18 @@ class TopicOverview : AppCompatActivity() {
         setContentView(R.layout.activity_topic_overview)
 
         val selectedTopic = intent.getStringExtra("selected")
-        val topic = findViewById<TextView>(R.id.topic)
-        topic.text = "You have chosen $selectedTopic"
+        val topicTextView = findViewById<TextView>(R.id.topic)
+        val descriptionTextView = findViewById<TextView>(R.id.description)
 
+        topicTextView.text = "Topic: $selectedTopic"
+
+        val description = when (selectedTopic) {
+            "Math" -> "This is a brief description of the Math topic."
+            "Physics" -> "This is a brief description of the Physics topic."
+            "Superheros" -> "This is a brief description of the Superheros topic."
+            else -> "No description available for $selectedTopic"
+        }
+
+        descriptionTextView.text = "Description: $description"
     }
 }
