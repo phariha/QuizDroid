@@ -33,7 +33,7 @@ class AnswerActivity : AppCompatActivity() {
 
         val remainingQuestions = intent.getIntExtra("remainingQuestions", 0)
 
-        val nextButton = findViewById<Button>(R.id.nextButton)
+        val nextButton = findViewById<Button>(R.id.finish)
         nextButton.setOnClickListener {
             if (remainingQuestions > 0) {
                 val nextQuestionIntent = Intent(this, QuizActivity::class.java)
