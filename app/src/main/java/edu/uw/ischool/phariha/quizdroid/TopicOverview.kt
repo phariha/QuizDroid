@@ -17,20 +17,20 @@ class TopicOverview : AppCompatActivity() {
 
         topicTextView.text = "Topic: $selectedTopic"
 
-        val description = when (selectedTopic) {
-            "Math" -> "This quiz will contain a few short questions about algebra."
-            "Physics" -> "This quiz will contain a few short questions about laws of phsyics."
-            "Superheros" -> "This quiz will contain a few short questions about Marvel and DC Superheros."
-            else -> "No description available for $selectedTopic"
-        }
+        if (selectedTopic != null) {
+            topicTextView.text = "Topic: ${selectedTopic}"
 
-        descriptionTextView.text = "Description: $description"
+            descriptionTextView.text = "Description: $selectedTopic"
 
-        val beginButton = findViewById<Button>(R.id.btnBegin)
-        beginButton.setOnClickListener {
-            val intent = Intent(this, QuizActivity::class.java)
-            intent.putExtra("selectedTopic", selectedTopic)
-            startActivity(intent)
+            val beginButton = findViewById<Button>(R.id.btnBegin)
+            beginButton.setOnClickListener {
+                val intent = Intent(this, QuizActivity::class.java)
+                intent.putExtra("selectedTopic", selectedTopic)
+                startActivity(intent)
+            }
+        } else {
+            topicTextView.text = "Topic: Not Found"
+            descriptionTextView.text = "Description: Not Found"
         }
     }
 }

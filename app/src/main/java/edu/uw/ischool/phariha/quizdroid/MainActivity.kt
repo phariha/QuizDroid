@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -14,19 +15,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var topics = ArrayList<String>()
+        val topics = QuizApp.topicRepository.getTopicStrings()
+        val titleText = findViewById<TextView>(R.id.titleText)
+        titleText.text = "Quizdroid"
 
-        topics.add("Math")
-        topics.add("Physics")
-        topics.add("Superheros")
 
         listView = findViewById(R.id.listview)
-        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, android.R.id.text1, topics)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, topics)
         listView.adapter = adapter
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             val selected = topics[position]
-            val intent = Intent(this@MainActivity, TopicOverview::class.java)
+            val intent = Intent(this, TopicOverview::class.java)
             intent.putExtra("selected", selected)
             startActivity(intent)
         }
