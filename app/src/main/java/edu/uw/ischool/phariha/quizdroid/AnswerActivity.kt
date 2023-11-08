@@ -14,35 +14,33 @@ class AnswerActivity : AppCompatActivity() {
 
         val userAnswer = intent.getStringExtra("userAnswer")
         val correctAnswer = intent.getStringExtra("correctAnswer")
-        val isCorrect = userAnswer == correctAnswer
+        val numCorrectAnswers = intent.getIntExtra("numCorrectAnswers", 0)
+        val isLastQuestion = intent.getBooleanExtra("isLastQuestion", false)
+
 
         val resultTextView = findViewById<TextView>(R.id.resultTextView)
-        resultTextView.text = if (isCorrect) "Correct!" else "Incorrect!"
+        val userAnswerTextView : TextView = findViewById(R.id.userAnswer)
+        val scoreText = findViewById<TextView>(R.id.scoreTextView)
 
-        val answerTextView = findViewById<TextView>(R.id.answerTextView)
-        answerTextView.text = "Your answer: $userAnswer\nCorrect answer: $correctAnswer"
+        val correctText = "The correct answer was: $correctAnswer"
+        val userAnswerText = "Your answer was: $userAnswer"
+        val numCorrectAnswer = "$numCorrectAnswers out of 3 questions correct"
+        resultTextView.text = correctText
+        userAnswerTextView.text = userAnswerText
+        scoreText.text = numCorrectAnswer
 
-        val scoreTextView = findViewById<TextView>(R.id.scoreTextView)
-        val currentScore = intent.getIntExtra("currentScore", 0)
-        val totalQuestions = intent.getIntExtra("totalQuestions", 0)
 
-        val updatedScore = if (isCorrect) currentScore + 1 else currentScore
-
-        val scoreText = "You have $updatedScore out of $totalQuestions correct"
-        scoreTextView.text = scoreText
-
-        val remainingQuestions = intent.getIntExtra("remainingQuestions", 0)
-
-        val nextButton = findViewById<Button>(R.id.finish)
-        nextButton.setOnClickListener {
-            if (remainingQuestions > 0) {
-                val nextQuestionIntent = Intent(this, QuizActivity::class.java)
-                nextQuestionIntent.putExtra("currentScore", updatedScore)
-                startActivity(nextQuestionIntent)
+        val nextButton = findViewById<Button>(R.id.Next)
+        if (isLastQuestion) {
+            nextButton.text = "Finish"
+        }
+        nextButton.setOnClickListener() {
+            if (isLastQuestion) {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
                 finish()
             } else {
-                val mainIntent = Intent(this, MainActivity::class.java)
-                startActivity(mainIntent)
                 finish()
             }
         }

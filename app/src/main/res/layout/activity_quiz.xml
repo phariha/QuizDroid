@@ -13,7 +13,7 @@
         android:layout_centerInParent="true"
         android:text="Question Placeholder"
         android:textAlignment="center"
-        android:textSize="20dp"
+        android:textSize="25dp"
         app:layout_constraintBottom_toTopOf="@+id/radiogroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -23,36 +23,22 @@
 
     <Button
         android:id="@+id/submitButton"
-        android:layout_width="228dp"
+        android:layout_width="129dp"
         android:layout_height="50dp"
         android:layout_below="@id/radiogroup"
         android:layout_centerHorizontal="true"
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.904"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radiogroup"
-        app:layout_constraintVertical_bias="0.689"
-        android:visibility="gone"/>
-
-    <Button
-        android:id="@+id/nextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/question"
-        android:layout_alignParentEnd="true"
-        android:text="Next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.882"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radiogroup"
-        app:layout_constraintVertical_bias="0.275" />
+        app:layout_constraintVertical_bias="0.274" />
 
     <Button
         android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="129dp"
+        android:layout_height="50dp"
         android:layout_below="@id/question"
         android:layout_alignParentStart="true"
         android:text="Back"
@@ -77,24 +63,28 @@
             android:id="@+id/one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="18dp"
             android:text="RadioButton" />
 
         <RadioButton
             android:id="@+id/two"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="18dp"
             android:text="RadioButton" />
 
         <RadioButton
             android:id="@+id/three"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="18dp"
             android:text="RadioButton" />
 
         <RadioButton
             android:id="@+id/four"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="18dp"
             android:text="RadioButton" />
     </RadioGroup>
 
