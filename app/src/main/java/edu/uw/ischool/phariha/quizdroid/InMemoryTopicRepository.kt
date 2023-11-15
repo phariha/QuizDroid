@@ -1,57 +1,85 @@
 package edu.uw.ischool.phariha.quizdroid
 
+import android.util.JsonReader
+import android.util.Log
+import java.io.File
+import java.io.FileInputStream
+import java.io.InputStreamReader
 
 class InMemoryTopicRepository : TopicRepository {
     private val topics = mutableListOf<Topic>()
 
     init {
-        topics.add(
-            Topic(
-                "Math",
-                "Math Quiz",
-                "This quiz will contain a few short questions about algebra.",
-                listOf(
-                    Quiz("What is x if 5x + 5 = 15?", listOf("2", "3", "4", "5"), 1),
-                    Quiz("What is x if 3x + 5 = 23?", listOf("6", "8", "10", "12"), 0),
-                    Quiz("What is x if 2x + 4 = 40?", listOf("16", "20", "18", "22"), 2)
-                )
-            )
-        )
+        val filePath = "/data/user/0/edu.uw.ischool.phariha.quizdroid/files/question.json"
+        val file = File(filePath)
+        if (file.exists()) {
+            FileInputStream(file).use { inputStream ->
+                JsonReader(InputStreamReader(inputStream)).use { jsonReader ->
+                    readTopicsFromJsonFile(jsonReader)
+                }
+            }
+        }
+    }
 
-        topics.add(
-            Topic(
-                "Physics",
-                "Physics Quiz",
-                "This quiz will contain a few short questions about laws of physics.",
-                listOf(
-                    Quiz("What is the formula for force?", listOf("F = ma", "E = mc^2", "F = mg", "F = mb"), 0),
-                    Quiz("What is the SI unit of energy?", listOf("Coulomb", "Watt", "Newton", "Joule"), 3),
-                    Quiz(
-                        "What is Newton's first law of motion?",
-                        listOf(
-                            "F = ma",
-                            "An object at rest stays at rest",
-                            "Every action has an equal and opposite reaction",
-                            "Objects fall at the same rate regardless of mass"
-                        ),
-                        0
-                    )
-                )
-            )
-        )
+    private fun readTopicsFromJsonFile(jsonReader: JsonReader) {
+        jsonReader.beginArray()
+        while (jsonReader.hasNext()) {
+            jsonReader.beginObject()
+            var title = ""
+            var shortDescription = ""
+            var longDescription = ""
+            var questions = emptyList<Quiz>()
+            while (jsonReader.hasNext()) {
+                when (jsonReader.nextName()) {
+                    "title" -> title = jsonReader.nextString()
+                    "descr" -> shortDescription = jsonReader.nextString()
+                    "descr" -> longDescription = jsonReader.nextString()
+                    "answers" -> {
+                        questions = readQuestionsArray(jsonReader)
+                    }
+                }
+            }
+            val topic = Topic(title, shortDescription, longDescription, questions)
+            topics.add(topic)
+            Log.i("topicList", topics.toString())
+            jsonReader.endObject()
+        }
+        jsonReader.endArray()
+    }
 
-        topics.add(
-            Topic(
-                "Superheros",
-                "Superheros Quiz",
-                "This quiz will contain a few short questions about Marvel and DC Superheros.",
-                listOf(
-                    Quiz("Who is the Man of Steel?", listOf("Batman", "Spider-Man", "Superman", "Iron Man"), 2),
-                    Quiz("What is Batman's real identity?", listOf("Bruce Wayne", "Clark Kent", "Peter Parker", "Tony Stark"), 0),
-                    Quiz("What is Thor's hammer called?", listOf("Super Soldier Serum", "Arc Reactor", "Gamma radiation", "Mjolnir"), 3)
-                )
-            )
-        )
+    private fun readQuestionsArray(jsonReader: JsonReader): List<Quiz> {
+        val questions = mutableListOf<Quiz>()
+        jsonReader.beginArray()
+        while (jsonReader.hasNext()) {
+            jsonReader.beginObject()
+            var question = ""
+            var options = emptyList<String>()
+            var correctOption = 0
+            while (jsonReader.hasNext()) {
+                when (jsonReader.nextName()) {
+                    "text" -> question = jsonReader.nextString()
+                    "answers" -> {
+                        options = readOptionsArray(jsonReader)
+                    }
+                    "answer" -> correctOption = jsonReader.nextInt()
+                }
+            }
+            val quiz = Quiz(question, options, correctOption)
+            questions.add(quiz)
+            jsonReader.endObject()
+        }
+        jsonReader.endArray()
+        return questions
+    }
+
+    private fun readOptionsArray(jsonReader: JsonReader): List<String> {
+        val options = mutableListOf<String>()
+        jsonReader.beginArray()
+        while (jsonReader.hasNext()) {
+            options.add(jsonReader.nextString())
+        }
+        jsonReader.endArray()
+        return options
     }
 
     override fun getTopics(): List<Topic> {

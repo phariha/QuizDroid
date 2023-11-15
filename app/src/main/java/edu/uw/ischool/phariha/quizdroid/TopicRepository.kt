@@ -1,7 +1,6 @@
 package edu.uw.ischool.phariha.quizdroid
 
 
-
 interface TopicRepository {
     fun getTopics(): List<Topic>
     fun getTopicByName(title: String): Topic?

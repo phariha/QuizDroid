@@ -2,6 +2,7 @@ package edu.uw.ischool.phariha.quizdroid
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Log.i("path", filesDir.toString())
 
         val topics = QuizApp.topicRepository.getTopicStrings()
         val titleText = findViewById<TextView>(R.id.titleText)
