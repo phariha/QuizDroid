@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Log.i("path", filesDir.toString())
 
-        val topics = QuizApp.topicRepository.getTopicStrings()
+        val topics = QuizApp.topicRepository.getTopicTitles()
         val titleText = findViewById<TextView>(R.id.titleText)
         titleText.text = "Quizdroid"
 

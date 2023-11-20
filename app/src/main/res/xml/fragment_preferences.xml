@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="pref_key_url"
+        android:title="URL"
+        android:summary="URL to use for question data"
+        android:inputType="text"
+        android:defaultValue=""/>
+
+    <EditTextPreference
+        android:key="pref_key_download_interval"
+        android:title="Download Interval"
+        android:summary="How often to check for new downloads (minutes)"
+        android:inputType="number"
+        android:defaultValue="60"/>
+</PreferenceScreen>
