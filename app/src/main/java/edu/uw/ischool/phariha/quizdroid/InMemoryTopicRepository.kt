@@ -1,6 +1,8 @@
 package edu.uw.ischool.phariha.quizdroid
 
+// InMemoryTopicRepository.kt
 import android.util.JsonReader
+import androidx.preference.PreferenceManager
 import java.io.FileReader
 
 class InMemoryTopicRepository : TopicRepository {
@@ -20,6 +22,7 @@ class InMemoryTopicRepository : TopicRepository {
     }
 
     override fun loadTopicsFromJson(filePath: String) {
+        topicList.clear()
         JsonReader(FileReader(filePath)).use { reader ->
             reader.beginArray()
             while (reader.hasNext()) {
